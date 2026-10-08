@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Halo · 下肢数字分身</title>
+  <style>
+    :root{font-family:"Segoe UI","Microsoft YaHei",sans-serif;color:#252a28;background:#f4f3ef;font-synthesis:none;--accent:#de663e;--line:#deded7;--muted:#777e79}
+    *{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}button:disabled{cursor:wait;opacity:.5}
+    header{height:76px;padding:0 4.2%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:13px}.mark{width:35px;height:35px;border:1px solid #333f37;border-radius:50%;display:grid;place-items:center;font-size:21px;font-weight:300}.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--muted)}h1{font-size:20px;font-weight:550;letter-spacing:.03em;margin:5px 0 0}.badge{font-size:12px;background:#eceee7;padding:8px 13px;border-radius:30px;color:#586259;display:flex;align-items:center;gap:7px}.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#a9b890}
+    main{display:grid;grid-template-columns:minmax(0,1fr) 288px;gap:26px;max-width:1500px;margin:auto;padding:20px 4.2% 16px}.viewport{position:relative;min-width:0;height:calc(100vh - 148px);min-height:520px;max-height:760px;border-radius:18px;overflow:hidden;background:linear-gradient(145deg,#eeede7,#e4e7e2)}#stage{height:100%;width:100%;touch-action:none}canvas{display:block}.caption{position:absolute;top:21px;left:25px;pointer-events:none}.caption strong{font-size:13px;letter-spacing:.04em;font-weight:500}.caption p{font-size:11px;color:var(--muted);margin:7px 0}.axis-note{position:absolute;left:25px;bottom:22px;font-size:11px;color:#6e7770}.views{position:absolute;bottom:20px;right:20px;display:flex;gap:4px;background:#ffffffc9;padding:5px;border:1px solid #ffffff;border-radius:10px}.views button{background:none;border:0;border-radius:6px;font-size:12px;padding:8px 12px;color:#59635c}.views button[aria-pressed=true]{background:#263a32;color:white}.views button:hover{background:#dce4dc;color:#233b30}
+    #loading{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:#e9eae3dd;z-index:2;font-size:14px;white-space:pre-line;padding:30px}#loading[hidden]{display:none}#loading.error{color:#8e3525}
+    aside{padding-top:4px}.panel-heading{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:17px}.panel-heading h2{font-size:17px;font-weight:550;margin:0}.label-small{font-size:10px;color:var(--muted);letter-spacing:.12em}.intro{font-size:12px;line-height:1.8;color:var(--muted);margin:12px 0 12px}.side{padding:12px 0 8px;border-bottom:1px solid var(--line)}.side-title{font-size:11px;letter-spacing:.12em;color:#587060;font-weight:600;margin:0 0 12px}.control{margin-bottom:7px}.control label{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:7px}.control output{font-variant-numeric:tabular-nums;font-size:18px;font-weight:450;color:#293e33}.control output small{font-size:12px;color:var(--muted);margin-left:3px}input[type=range]{width:100%;accent-color:var(--accent);height:5px;cursor:pointer;margin:0}.range-labels{display:flex;justify-content:space-between;color:#8f9690;font-size:10px;margin-top:9px}.visibility{padding:15px 0;display:flex;gap:19px}.visibility label{display:flex;gap:7px;align-items:center;font-size:12px;cursor:pointer}.visibility input{accent-color:#3a5b48;width:14px;height:14px}.reset{width:100%;padding:12px;border:1px solid #bdc7be;border-radius:9px;background:#edf0e9;color:#304739;font-size:13px}.reset:hover{background:#e1e8df}.footnote{font-size:10px;color:#8b918c;line-height:1.9;margin-top:10px}footer{max-width:1500px;margin:auto;padding:0 4.2% 16px;font-size:10px;color:#90978f;display:flex;justify-content:space-between;letter-spacing:.04em}
+    .actor-labels{position:absolute;top:71px;left:0;right:0;display:grid;grid-template-columns:1fr 1fr;text-align:center;pointer-events:none}.actor-labels strong{display:block;font-size:15px;font-weight:550}.actor-labels small{display:block;font-size:10px;color:var(--muted);margin-top:6px}.actor-labels .source{color:#526d7c}.actor-labels .digital{color:#365343}.divider{position:absolute;left:50%;top:140px;bottom:78px;border-left:1px solid #bac5bb55;pointer-events:none}.flow{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#526259;background:#e9ede5;border-radius:9px;padding:13px;margin:18px 0}.flow b{color:#95a48d;font-weight:400}.play{width:100%;padding:13px;border:0;border-radius:9px;background:#304d3c;color:#fff;font-size:14px;margin-bottom:10px}.play:hover{background:#203e2c}.motion-status{font-size:11px;color:#66766a;line-height:1.8;margin:13px 0 20px}details{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}summary{font-size:12px;color:#6d766f;cursor:pointer}details[open] summary{margin-bottom:15px}
+    .demo-choice{display:block;font-size:12px;color:#526259;margin:0 0 16px}.demo-choice select{display:block;width:100%;margin-top:8px;padding:11px 12px;border:1px solid #bdc7be;border-radius:9px;background:#edf0e9;color:#304739;font:inherit;cursor:pointer}
+    .game-panel[hidden]{display:none}.game-panel{padding:15px;border:1px solid #d4ddc9;background:#e8eee0;border-radius:12px;margin-bottom:13px}.game-panel h3{font-size:16px;margin:0 0 12px;color:#365343}.game-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:10px;color:#687968}.game-metrics output{display:block;margin-top:4px;font-size:20px;color:#365343;font-variant-numeric:tabular-nums}.game-panel progress{display:block;width:100%;height:7px;margin:13px 0;accent-color:#729263}.game-mission{font-size:12px;line-height:1.6;min-height:20px;color:#365343;margin:8px 0 12px}.game-auto{font-size:11px;display:flex;align-items:center;gap:7px}.game-auto input{accent-color:#56744c}.game-actions{display:flex;gap:6px;margin-top:11px}.game-actions button{flex:1;padding:9px 2px;border:1px solid #b6c8ad;border-radius:7px;background:#f5f6ed;color:#3f5940;font-size:11px}.game-actions button:hover{background:#d7e4cb}.game-result[hidden]{display:none}.game-result{margin-top:12px;padding:10px;border-radius:8px;background:#f0deb0;color:#76592c;font-size:12px}.game-result strong{float:right}.is-game aside>.intro,.is-game aside>.flow{display:none}.is-game .motion-status{margin:8px 0}.is-game .viewport{background:linear-gradient(145deg,#e9efe1,#dce5d5)}
+    @media(max-width:1050px){header{height:76px;padding:0 20px}h1{font-size:17px}main{grid-template-columns:1fr;gap:20px;padding:18px 18px 20px}.viewport{height:58vh;min-height:420px}aside{padding:0 8px}.side{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.side-title{grid-column:1/-1}.visibility{padding:18px 0}footer{padding:0 25px 16px}.axis-note{max-width:45%;font-size:10px}.views button{padding:7px 10px}}
+    .game-inset-frame{display:none}.is-game .game-inset-frame{display:block;position:absolute;left:17px;bottom:64px;width:calc(var(--preview-w) + 2px);height:calc(var(--preview-h) + 2px);border:1px solid #fff9;border-radius:10px;box-shadow:0 8px 24px #253e3020;pointer-events:none}.is-game .actor-labels{inset:0;display:block}.is-game .actor-labels .source{position:absolute;left:18px;bottom:calc(65px + var(--preview-h) + 7px);width:var(--preview-w);background:#ffffffe6;border:1px solid #fff;border-radius:8px;padding:8px}.is-game .actor-labels .source strong{font-size:11px}.is-game .actor-labels .source small{display:none}.is-game .actor-labels .digital{position:absolute;right:25px;top:22px;text-align:right}.is-game .divider{display:none}.is-game .viewport{background:#eaf0df;border:1px solid #dbe7cc}.is-game .game-panel{background:linear-gradient(160deg,#fffaf0,#f0f4e7);border-color:#dce6ce;box-shadow:0 6px 22px #445c3010}.is-game .game-panel h3{font-size:18px;color:#335d46}.is-game .game-metrics>span{background:#fff9;border:1px solid #e8eadb;border-radius:8px;padding:8px 6px}.is-game .game-metrics output{font-size:19px}.is-game .game-actions button{box-shadow:0 2px 0 #b6c8ad}.is-game .play{background:#3b6b50;box-shadow:0 3px 0 #244b36}.is-game .game-mission{background:#e7eedc;border-radius:7px;padding:8px}.is-game .caption strong{font-weight:650;font-size:15px;color:#365540}
+  </style>
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <header><div class="brand"><div class="mark" aria-hidden="true">H</div><div><div class="eyebrow">LOWER LIMB AVATAR / 02</div><h1>下肢数字分身</h1></div></div><span class="badge">模拟输入</span></header>
+  <main>
+    <section class="viewport" aria-label="人体与外骨骼三维预览">
+      <div class="caption"><strong>HALO · 动作复现</strong><p id="status" role="status">正在准备模型</p></div>
+      <div class="actor-labels"><div class="source"><strong>模拟用户</strong><small>未穿戴外骨骼 · 动作来源</small></div><div class="digital"><strong>数字下肢</strong><small>穿戴外骨骼 · 跟随动作</small></div></div><div class="divider" aria-hidden="true"></div>
+      <div id="stage" aria-label="可旋转、缩放的三维场景"></div>
+      <div class="game-inset-frame" aria-hidden="true"></div>
+      <div id="loading" role="status">正在加载人体与外骨骼…</div>
+      <span class="axis-note">拖动旋转 · 滚轮缩放</span>
+      <nav class="views" aria-label="观察视角"><button data-view="front" aria-pressed="false">正面</button><button data-view="side" aria-pressed="false">侧面</button><button data-view="back" aria-pressed="false">背面</button><button data-view="iso" aria-pressed="true">立体</button></nav>
+    </section>
+    <aside>
+      <div class="panel-heading"><h2>动作跟随演示</h2><span class="label-small">MOTION MIRROR</span></div>
+      <p class="intro">左侧模拟用户的下肢动作，右侧数字下肢接收动作状态并同步复现。</p>
+      <div class="flow"><span>用户动作</span><b aria-hidden="true">→</b><span>数字复现</span></div>
+      <label class="demo-choice" for="demoMode">选择演示<select id="demoMode" disabled><option value="follow">动作跟随</option><option value="stairsUp">上楼动作复现</option><option value="stairsDown">下楼动作复现</option><option value="adventure">体感闯关 · 林间试炼</option></select></label>
+      <section id="gamePanel" class="game-panel" aria-label="体感闯关游戏" hidden>
+        <h3>第 1 关 · 林间试炼</h3>
+        <div class="game-metrics"><span>得分<output id="gameScore">0</output></span><span>金币<output id="gameCoins">0 / 6</output></span><span>守卫生命<output id="gameHP">3 / 3</output></span></div>
+        <progress id="gameProgress" max="7.2" value="0" aria-label="关卡进度"></progress>
+        <p id="gameMission" class="game-mission" role="status">交替抬腿前进 · 收集沿途金币</p>
+        <label class="game-auto"><input id="gameAuto" type="checkbox" checked>自动演示</label>
+        <div class="game-actions"><button data-game-action="left">A · 左腿</button><button data-game-action="right">D · 右腿</button><button data-game-action="squat">S · 屈膝</button></div>
+        <p class="footnote">点击或按 A / D 交替抬腿；障碍前抬腿跨越，遇到守卫按 S 屈膝攻击。</p>
+        <div id="gameResult" class="game-result" role="status" hidden>挑战完成！<strong id="gameResultScore">0 分</strong></div>
+      </section>
+      <button id="play" class="play" aria-pressed="true" disabled>暂停演示</button>
+      <button id="reset" class="reset" disabled>恢复站立</button>
+      <p id="motionStatus" class="motion-status" role="status">交替抬腿 · 准备演示</p>
+      <div class="visibility"><label><input id="showHuman" type="checkbox" checked>显示人体</label><label><input id="showExo" type="checkbox" checked>显示外骨骼</label></div>
+      <details id="manualPanel"><summary>模拟输入调试</summary>
+      <p class="intro">手动改变模拟用户动作，数字下肢自动跟随。角度以初始姿态为零。</p>
+      <section class="side"><p class="side-title">左侧 / LEFT</p>
+        <div class="control"><label for="leftHip">左髋屈曲 <output id="leftHipValue">0<small>°</small></output></label><input id="leftHip" type="range" min="-15" max="70" value="0" step="1" disabled><div class="range-labels"><span>−15°</span><span>70°</span></div></div>
+        <div class="control"><label for="leftKnee">左膝屈曲 <output id="leftKneeValue">0<small>°</small></output></label><input id="leftKnee" type="range" min="0" max="110" value="0" step="1" disabled><div class="range-labels"><span>0°</span><span>110°</span></div></div>
+      </section>
+      <section class="side"><p class="side-title">右侧 / RIGHT</p>
+        <div class="control"><label for="rightHip">右髋屈曲 <output id="rightHipValue">0<small>°</small></output></label><input id="rightHip" type="range" min="-15" max="70" value="0" step="1" disabled><div class="range-labels"><span>−15°</span><span>70°</span></div></div>
+        <div class="control"><label for="rightKnee">右膝屈曲 <output id="rightKneeValue">0<small>°</small></output></label><input id="rightKnee" type="range" min="0" max="110" value="0" step="1" disabled><div class="range-labels"><span>0°</span><span>110°</span></div></div>
+      </section>
+      </details>
+    </aside>
+  </main>
+  <footer><span>Innerscene 灰色人体 · Halo 外观复刻</span><span>LOWER LIMB AVATAR</span></footer>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

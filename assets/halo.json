@@ -1,0 +1,36 @@
+{
+  "source": "D:\\ProgramStudy\\FreeCAD\\Hypershell_Halo_\u590d\u523b\\Hypershell_Halo_Replica.FCStd",
+  "groups": {
+    "waist": 44,
+    "leftThigh": 43,
+    "rightThigh": 43,
+    "leftShank": 20,
+    "rightShank": 20
+  },
+  "triangles": 230435,
+  "pivots": {
+    "leftHip": [
+      0.17500000000000002,
+      0.0,
+      -0.0
+    ],
+    "rightHip": [
+      -0.17500000000000002,
+      0.0,
+      -0.0
+    ],
+    "leftKnee": [
+      0.167,
+      -0.4199238026118548,
+      -0.0
+    ],
+    "rightKnee": [
+      -0.167,
+      -0.4199238026118548,
+      -0.0
+    ]
+  },
+  "nominalShankReference_m": 0.42,
+  "coordinateConvention": "X avatar-left, Y up, Z forward; anatomical side assigned by position",
+  "passiveJoints": "fixed at source neutral pose"
+}

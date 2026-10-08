@@ -1,0 +1,6 @@
+# Local CAD export and preview helpers are outside the published demo.
+/start.cmd
+/tools/
+__pycache__/
+.DS_Store
+Thumbs.db
